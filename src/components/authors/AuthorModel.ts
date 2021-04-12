@@ -13,6 +13,7 @@ import { generateApiKey } from '../../utils/app';
   schemaOptions: {
     toJSON: { virtuals: true, getters: true },
     toObject: { virtuals: true, getters: true },
+    timestamps: true,
   },
 })
 @pre<AuthorModel>('save', function () {
