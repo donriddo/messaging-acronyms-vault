@@ -1,5 +1,6 @@
 import { DocumentType } from '@typegoose/typegoose';
 import { FilterQuery, SaveOptions, UpdateQuery } from 'mongoose';
+import { buildFindAllQuery, buildFindOneQuery } from '../../utils/app';
 import Author, { AuthorModel } from './AuthorModel';
 
 export default class AuthorService {
@@ -20,13 +21,20 @@ export default class AuthorService {
   public static async findOne(
     conditions: FilterQuery<DocumentType<AuthorModel>>,
   ): Promise<DocumentType<AuthorModel>> {
-    return await Author.findOne(conditions);
+    return await buildFindOneQuery(Author, conditions);
   }
 
   public static async findAll(
     conditions: FilterQuery<DocumentType<AuthorModel>>,
-  ): Promise<DocumentType<AuthorModel>[]> {
-    return await Author.find(conditions);
+  ): Promise<{
+    data: any;
+    meta: {
+      limit: number;
+      offset: number;
+      total: number;
+    }
+  }> {
+    return await buildFindAllQuery(Author, conditions);
   }
 
   public static async update(

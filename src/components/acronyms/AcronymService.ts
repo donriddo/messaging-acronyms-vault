@@ -1,5 +1,6 @@
 import { DocumentType } from '@typegoose/typegoose';
 import { FilterQuery, SaveOptions, UpdateQuery } from 'mongoose';
+import { buildFindAllQuery, buildFindOneQuery } from '../../utils/app';
 import Acronym, { AcronymModel } from './AcronymModel';
 
 export default class AcronymService {
@@ -20,13 +21,33 @@ export default class AcronymService {
   public static async findOne(
     conditions: FilterQuery<DocumentType<AcronymModel>>,
   ): Promise<DocumentType<AcronymModel>> {
-    return await Acronym.findOne(conditions);
+    return await buildFindOneQuery(Acronym, conditions);
   }
 
   public static async findAll(
     conditions: FilterQuery<DocumentType<AcronymModel>>,
-  ): Promise<DocumentType<AcronymModel>[]> {
-    return await Acronym.find(conditions);
+  ): Promise<{
+    data: any;
+    meta: {
+      limit: number;
+      offset: number;
+      total: number;
+    }
+  }> {
+    return await buildFindAllQuery(Acronym, conditions);
+  }
+
+  public static async fuzzySearch(
+    conditions: FilterQuery<DocumentType<AcronymModel>>,
+  ): Promise<{
+    data: any;
+    meta: {
+      limit: number;
+      offset: number;
+      total: number;
+    }
+  }> {
+    return await buildFindAllQuery(Acronym, conditions, true);
   }
 
   public static async update(
