@@ -42,13 +42,14 @@ export default class AcronymController {
   ) {
 
     try {
-      const acronyms = await AcronymService.fuzzySearch(req.query);
+      const acronyms = await AcronymService.findAll(req.query);
 
       return res.status(200).json({
         message: 'Acronyms retrieved successfully',
         ...acronyms,
       });
     } catch (e) {
+      console.log(e);
       next(e);
     }
   }
