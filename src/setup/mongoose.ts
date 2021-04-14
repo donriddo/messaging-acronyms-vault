@@ -3,22 +3,25 @@ import bluebird from 'bluebird';
 
 import * as config from '../../config';
 
-export const dbUrl = config.get('db.url');
+export default async function setupDB(databaseUrl?: string) {
+  const dbUrl = databaseUrl || config.get('db.url');
 
-export default async function setupDB() {
-  mongoose.connect(
-    dbUrl,
-    {
-      useNewUrlParser: true,
-      dbName: 'acronyms',
-      promiseLibrary: bluebird,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-    },
-    (error) => {
-      if (error) {
-        console.log(error);
-      }
-    },
-  );
+  return new Promise((resolve, reject) => {
+    mongoose.connect(
+      dbUrl,
+      {
+        useNewUrlParser: true,
+        promiseLibrary: bluebird,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+      },
+      (error) => {
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(true);
+      },
+    );
+  });
 }
