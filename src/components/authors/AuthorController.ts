@@ -1,5 +1,5 @@
-import { controller, post } from 'route-decorators';
-import { Request, Response, NextFunction } from 'express';
+import { controller, get, post } from 'route-decorators';
+import { Request, Response, NextFunction, Router } from 'express';
 import * as createError from 'http-errors';
 
 import AuthorService from './AuthorService';
@@ -7,6 +7,8 @@ import { generateApiKey, validate } from '../../utils/app';
 
 @controller('/authors')
 export default class AuthorController {
+  public $routes: any[];
+
   @post('/register')
   public async registerAuthor(
     req: Request,
@@ -55,6 +57,25 @@ export default class AuthorController {
         data: {
           apiKey,
         },
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  @get()
+  public async listAuthors(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+
+    try {
+      const authors = await AuthorService.findAll(req.query);
+
+      return res.status(200).json({
+        message: 'Authors retrieved successfully',
+        ...authors,
       });
     } catch (e) {
       next(e);
