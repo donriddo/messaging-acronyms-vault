@@ -71,6 +71,7 @@ export default class AcronymController {
 
       return res.status(200).json({
         message: 'Acronym updated successfully',
+        data: await AcronymService.findOne({ _id: req.params.acronymId }),
       });
     } catch (e) {
       next(e);
