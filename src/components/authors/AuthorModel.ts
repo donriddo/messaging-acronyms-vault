@@ -49,4 +49,7 @@ export class AuthorModel {
   public name?: string;
 }
 
-export default getModelForClass(AuthorModel);
+export default getModelForClass(
+  AuthorModel,
+  { options: { customName: 'Author' } },
+);

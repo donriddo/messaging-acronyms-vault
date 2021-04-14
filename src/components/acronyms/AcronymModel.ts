@@ -22,4 +22,7 @@ export class AcronymModel {
   public author!: Ref<AuthorModel>;
 }
 
-export default getModelForClass(AcronymModel);
+export default getModelForClass(
+  AcronymModel,
+  { options: { customName: 'Acronym' } },
+);
