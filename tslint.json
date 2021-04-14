@@ -3,7 +3,7 @@
     "tslint-config-airbnb"
   ],
   "rules": {
-    "no-console": true,
+    "no-console": false,
     "no-var-requires": false,
     "object-literal-sort-keys": false,
     "no-parameter-reassignment": false,
