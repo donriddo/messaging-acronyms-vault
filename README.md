@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/donriddo/messaging-acronyms-vault/badge.svg?branch=main)](https://coveralls.io/github/donriddo/messaging-acronyms-vault?branch=main)
+
 # WTF API (Node.js, Express, TypeScript, Docker, MongoDB, Mongoose)
 
 ## Steps to run app
