@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import bluebird from 'bluebird';
-import config from 'config';
+
+import * as config from '../../config';
 
 export const dbUrl = config.get('db.url');
 
@@ -16,7 +17,7 @@ export default async function setupDB() {
     },
     (error) => {
       if (error) {
-
+        console.log(error);
       }
     },
   );
