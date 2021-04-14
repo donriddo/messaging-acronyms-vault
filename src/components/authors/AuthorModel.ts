@@ -11,7 +11,14 @@ import { generateApiKey } from '../../utils/app';
 
 @modelOptions({
   schemaOptions: {
-    toJSON: { virtuals: true, getters: true },
+    toJSON: {
+      virtuals: true,
+      getters: true,
+      transform(doc, ret) {
+        delete ret.apiKey;
+        return ret;
+      },
+    },
     toObject: { virtuals: true, getters: true },
     timestamps: true,
   },
@@ -35,7 +42,7 @@ export class AuthorModel {
   })
   public email!: string;
 
-  @prop({ hide: true, hideJSON: true })
+  @prop()
   public apiKey?: string;
 
   @prop()
