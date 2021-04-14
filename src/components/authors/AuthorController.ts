@@ -88,7 +88,8 @@ export default class AuthorController {
     if (type === 'register') {
       fields = {
         email: {
-          type: 'email',
+          type: 'string',
+          format: 'email',
           required: true,
         },
         name: {
@@ -100,7 +101,8 @@ export default class AuthorController {
     if (type === 'generate-api-key') {
       fields = {
         email: {
-          type: 'email',
+          type: 'string',
+          format: 'email',
           required: true,
         },
       };
