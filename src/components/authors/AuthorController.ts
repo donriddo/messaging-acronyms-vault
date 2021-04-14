@@ -23,7 +23,7 @@ export default class AuthorController {
       return res.status(200).json({
         message: 'Registration successful. Please keep your API key safe. It will only be shown to you once',
         data: {
-          ...author,
+          ...author.toJSON(),
           apiKey: author.apiKey,
         },
       });
