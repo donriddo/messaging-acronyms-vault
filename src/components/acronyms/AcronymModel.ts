@@ -1,5 +1,5 @@
 import { getModelForClass, modelOptions, plugin, prop, Ref } from '@typegoose/typegoose';
-import mongooseFuzzySearching from 'mongoose-fuzzy-searching';
+import * as mongooseFuzzySearching from 'mongoose-fuzzy-searching';
 
 import { AuthorModel } from '../authors/AuthorModel';
 
