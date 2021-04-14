@@ -49,7 +49,6 @@ export default class AcronymController {
         ...acronyms,
       });
     } catch (e) {
-      console.log(e);
       next(e);
     }
   }
