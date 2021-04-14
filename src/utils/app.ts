@@ -1,8 +1,8 @@
-import config from 'config';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import * as createError from 'http-errors';
-import * as validator from 'lx-valid';
 import { omit } from 'lodash';
+import * as validator from 'lx-valid';
+import * as config from '../../config';
 
 export function generateApiKey(authorEmail) {
   const secretKey = config.get('secretKey');
@@ -22,9 +22,9 @@ export function validate(object, schema, options) {
 }
 
 export function processPopulate(query) {
-  const paths = query.split('.');
+  const paths = query?.split('.');
   let currentPopulate;
-  while (paths.length) {
+  while (paths?.length) {
     const path = paths.pop();
     const populate: any = { path };
 
@@ -39,8 +39,8 @@ export function processPopulate(query) {
 }
 
 export function buildPopulateQuery(populate, cursor) {
-  const populateFields = populate.split(',');
-  if (populateFields.length) {
+  const populateFields = populate?.split(',');
+  if (populateFields?.length) {
     populateFields.forEach((field) => {
       cursor = cursor.populate(processPopulate(field));
     });
