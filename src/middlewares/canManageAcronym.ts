@@ -18,7 +18,7 @@ export default async function canManageAcronym(
       throw createError(404, 'Acronym not found');
     }
 
-    if (acronym.author !== req.author.id) {
+    if (acronym.author.toString() !== req.author.id) {
       throw createError(
         403,
         'You are not allowed to perform this action',
