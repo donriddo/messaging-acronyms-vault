@@ -16,9 +16,11 @@
 
 4. Get a working `.env` file. There is a template to follow which is `.env.sample`
 
-5. RUN `yarn test` to run the tests.
+5. Make sure you have MongoDB installed and running 
 
-6. RUN `yarn serve` to launch the app
+6. RUN `yarn test` to run the tests.
+
+7. RUN `yarn serve` to launch the app
 
 
 ## How to use the app
