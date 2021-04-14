@@ -16,10 +16,11 @@ import { generateApiKey } from '../../utils/app';
     timestamps: true,
   },
 })
-@pre<AuthorModel>('save', function () {
+@pre<AuthorModel>('save', function (next) {
   if (this.isNew) {
     this.apiKey = generateApiKey(this.email);
   }
+  next();
 })
 @index({ email: 1, isDeleted: 1 }, { unique: true, sparse: true })
 export class AuthorModel {
