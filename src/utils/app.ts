@@ -2,7 +2,26 @@ import * as crypto from 'crypto';
 import * as createError from 'http-errors';
 import { omit } from 'lodash';
 import * as validator from 'lx-valid';
+import { createLogger, format, transports, remove } from 'winston';
+
 import * as config from '../../config';
+
+const isProduction = config.get('env') === 'production';
+const options = {
+  console: {
+    level: 'debug',
+    handleExceptions: true,
+    json: false,
+    colorize: true,
+  },
+};
+
+const logger = createLogger({
+  transports: [
+    new transports.Console(options.console),
+  ],
+  exitOnError: false,
+});
 
 export function generateApiKey(authorEmail) {
   const secretKey = config.get('secretKey');
@@ -88,3 +107,7 @@ export async function buildFindAllQuery(
     meta: { limit, offset, total },
   };
 }
+
+export const loggerStream = {
+  write: (message) => (isProduction ? logger : console).info(message.trim()),
+};
