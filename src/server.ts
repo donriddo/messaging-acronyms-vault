@@ -5,6 +5,8 @@
 import app from './app';
 import * as http from 'http';
 import * as config from 'config';
+import setupDB from './setup/mongoose';
+import seeds from './db/seeds';
 
 /**
  * Get port from environment and store in Express.
@@ -84,3 +86,10 @@ function onListening() {
     : `port ${addr.port}`;
   console.log(`Listening on ${bind}`);
 }
+
+setupDB()
+  .then(() => console.log(`Successfully connected to ${process.env.DATABASE_URL}`))
+  .catch((err) => {
+    console.error(err);
+  });
+seeds.run();
