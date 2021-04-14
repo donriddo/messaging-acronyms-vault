@@ -34,20 +34,9 @@ export default class AcronymService {
       total: number;
     }
   }> {
-    return await buildFindAllQuery(Acronym, conditions);
-  }
-
-  public static async fuzzySearch(
-    conditions: FilterQuery<DocumentType<AcronymModel>>,
-  ): Promise<{
-    data: any;
-    meta: {
-      limit: number;
-      offset: number;
-      total: number;
-    }
-  }> {
-    return await buildFindAllQuery(Acronym, conditions, true);
+    return !conditions.$search
+      ? await buildFindAllQuery(Acronym, conditions)
+      : await buildFindAllQuery(Acronym, conditions, true);
   }
 
   public static async update(
