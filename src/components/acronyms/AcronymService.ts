@@ -49,6 +49,6 @@ export default class AcronymService {
   public static async remove(
     conditions: FilterQuery<DocumentType<AcronymModel>>,
   ): Promise<any> {
-    return await Acronym.remove(conditions);
+    return await Acronym.deleteOne(conditions);
   }
 }

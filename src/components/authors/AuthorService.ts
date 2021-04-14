@@ -47,6 +47,6 @@ export default class AuthorService {
   public static async remove(
     conditions: FilterQuery<DocumentType<AuthorModel>>,
   ): Promise<any> {
-    return await Author.remove(conditions);
+    return await Author.deleteOne(conditions);
   }
 }
