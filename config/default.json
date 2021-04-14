@@ -1,4 +1,5 @@
 {
+  "env": "NODE_ENV",
   "secretKey": "SECRET_KEY",
   "db": {
     "url": "DATABASE_URL"
