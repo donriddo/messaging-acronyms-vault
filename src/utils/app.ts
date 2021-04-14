@@ -71,7 +71,9 @@ export async function buildFindAllQuery(
   const populate = conditions.$populate;
   const query = omit(conditions, ['$offset', '$limit', '$populate', '$search']);
 
-  const total = await model.countDocuments(query);
+  const total = useFuzzySearch
+    ? (await model.fuzzySearch(search, query)).length // hacky
+    : await model.countDocuments(query);
 
   let cursor = useFuzzySearch
     ? model.fuzzySearch(search, query)
