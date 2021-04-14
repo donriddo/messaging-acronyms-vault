@@ -1,5 +1,5 @@
 import { controller, del, get, post, put } from 'route-decorators';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, Router } from 'express';
 
 import AcronymService from './AcronymService';
 import { validate } from '../../utils/app';
@@ -9,6 +9,8 @@ import canManageAcronym from '../../middlewares/canManageAcronym';
 
 @controller('/acronyms')
 export default class AcronymController {
+  public $routes: any[];
+
   @post(isAuthorized)
   public async createAcronym(
     req: IRequest,
