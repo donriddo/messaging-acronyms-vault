@@ -1,11 +1,20 @@
+import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import * as createError from 'http-errors';
+import { sign } from 'jsonwebtoken';
 import { omit } from 'lodash';
 import * as validator from 'lx-valid';
-import { createLogger, format, transports, remove } from 'winston';
+import { createLogger, transports } from 'winston';
+import { DocumentType } from '@typegoose/typegoose';
 
 import * as config from '../../config';
+import { UserSchema } from '../components/users/UserModel';
 
+const SECRET = process.env.SECRET_KEY;
+export const SEVEN_DAYS = 60 * 60 * 24 * 7;
+export const SIXTY_DAYS = 60 * 60 * 24 * 60;
+
+const isDev = process.env.NODE_ENV === 'development';
 const isProduction = config.get('env') === 'production';
 const options = {
   console: {
@@ -23,12 +32,17 @@ const logger = createLogger({
   exitOnError: false,
 });
 
-export function generateApiKey(authorEmail) {
+export function generateApiKey(userEmail) {
   const secretKey = config.get('secretKey');
   return crypto.createHmac('sha256', secretKey)
-    .update(JSON.stringify({ authorEmail, timestamp: Date.now() }))
+    .update(JSON.stringify({ userEmail, timestamp: Date.now() }))
     .digest('hex');
 }
+
+export const hashPassword = (password: string): string => {
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
+};
 
 export function validate(object, schema, options) {
   const fn = options.isUpdate ? validator.getValidationFunction() : validator.validate;
@@ -110,4 +124,41 @@ export async function buildFindAllQuery(
 
 export const loggerStream = {
   write: (message) => (isProduction ? logger : console).info(message.trim()),
+};
+
+const getExpiry = (options: any = {}) => {
+  if (options.shortExpiry && !isDev) {
+    return SEVEN_DAYS;
+  }
+
+  return SIXTY_DAYS;
+};
+
+export const createToken = (user: DocumentType<UserSchema>, exp = null) => {
+  const { _id: id, email } = user;
+  return sign(
+    {
+      email,
+      id,
+      accountId: (user as any).accountId,
+    },
+    SECRET,
+    { expiresIn: exp || getExpiry() },
+  );
+};
+
+export const getToken = (data: any) => {
+  const expiryMins = getExpiry(
+    { shortExpiry: data.shortTokenExpiry },
+  );
+  const token = createToken(data, expiryMins);
+  const issued = Math.floor(Date.now() / 1000);
+
+  const result = {
+    issued,
+    token,
+    expires: issued + expiryMins,
+  };
+
+  return result;
 };
