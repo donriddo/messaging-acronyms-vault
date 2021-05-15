@@ -17,7 +17,7 @@ const isDevOrTest = ['development', 'test'].indexOf(config.get('env')) > -1;
 const logType = isDevOrTest ? 'dev' : 'combined';
 app.use(morgan(logType, { stream: loggerStream }));
 
-app.use('/api/v1/', generatedRoutes());
+app.use('/api/', generatedRoutes());
 
 app.use('*', (req, res, next) => {
   if (!req.route) {
