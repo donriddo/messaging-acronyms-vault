@@ -7,7 +7,6 @@ import * as http from 'http';
 import * as config from 'config';
 import setupDB from './setup/mongoose';
 import seeds from './db/seeds';
-import { setupPassportAuthentication } from './setup/passport';
 
 /**
  * Get port from environment and store in Express.
@@ -89,11 +88,8 @@ function onListening() {
 }
 
 setupDB()
-  .then(() => {
-    console.log(`Successfully connected to ${process.env.DATABASE_URL}`);
-  })
+  .then(() => console.log(`Successfully connected to ${process.env.DATABASE_URL}`))
   .catch((err) => {
     console.error(err);
   });
 seeds.run();
-setupPassportAuthentication();
