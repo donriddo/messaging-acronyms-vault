@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import * as createError from 'http-errors';
 
-import UserService from '../components/users/UserService';
+import AuthorService from '../components/authors/AuthorService';
 import { IRequest } from '../utils/interfaces';
 
 export default async function isAuthorized(
@@ -18,15 +18,15 @@ export default async function isAuthorized(
       );
     }
 
-    const user = await UserService.findOne({ apiKey });
-    if (!user) {
+    const author = await AuthorService.findOne({ apiKey });
+    if (!author) {
       throw createError(
         401,
         'You are not authorized to access this resource',
       );
     }
 
-    req.user = user;
+    req.author = author;
 
     next();
   } catch (error) {
