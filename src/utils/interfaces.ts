@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { DocumentType } from '@typegoose/typegoose';
-import { UserModel } from '../components/users/UserModel';
+import { AuthorModel } from '../components/authors/AuthorModel';
 
 export interface IRequest extends Request {
-  user: DocumentType<UserModel>;
+  author: DocumentType<AuthorModel>;
 }
